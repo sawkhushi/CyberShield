@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CyberShield</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=6">
+</head>
+<body class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+
+    <div class="bg-grid"></div>
+    <div class="glow-orb-1" style="top: 20%; right: 20%; width: 400px; height: 400px; background: var(--accent-2);"></div>
+
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5 col-xl-4">
+                
+                <div class="text-center mb-4">
+                    <i class="bi bi-shield-check fs-1 text-gradient-accent"></i>
+                    <h2 class="fw-bold text-white mt-2 brand-font">CyberShield</h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Initialize New Node</p>
+                </div>
+
+                <!-- TIGHTENED CARD HEIGHT AND PADDING -->
+                <div class="enterprise-card p-4" style="height: max-content !important;">
+                    <h3 class="fs-5 fw-bold text-white mb-4 text-center">Create Account</h3>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert align-items-center d-flex p-3 mb-4 rounded" 
+                                     style="background: {% if category == 'success' %}rgba(16, 185, 129, 0.1){% else %}rgba(239, 68, 68, 0.1){% endif %}; 
+                                            border: 1px solid {% if category == 'success' %}rgba(16, 185, 129, 0.3){% else %}rgba(239, 68, 68, 0.3){% endif %}; 
+                                            color: {% if category == 'success' %}#10B981{% else %}#EF4444{% endif %}; font-size: 0.85rem;">
+                                    <i class="bi {% if category == 'success' %}bi-check-circle{% else %}bi-exclamation-triangle{% endif %} me-2 fs-5"></i>
+                                    <div>{{ message }}</div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form action="/register" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">FULL NAME</label>
+                            <div class="position-relative">
+                                <i class="bi bi-person input-icon"></i>
+                                <input type="text" name="name" class="form-control form-control-custom w-100" placeholder="System Admin" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">EMAIL ADDRESS</label>
+                            <div class="position-relative">
+                                <i class="bi bi-envelope input-icon"></i>
+                                <input type="email" name="email" class="form-control form-control-custom w-100" placeholder="admin@cybershield.test" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">PASSWORD</label>
+                            <div class="position-relative">
+                                <i class="bi bi-key input-icon"></i>
+                                <input type="password" name="password" id="passwordInput" class="form-control form-control-custom w-100" placeholder="Create secure password" style="padding-right: 40px;" required>
+                                <i class="bi bi-eye-slash position-absolute" id="togglePassword" style="right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1.1rem; z-index: 10;"></i>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary-custom w-100 py-3 mb-4">Initialize Account</button>
+                    </form>
+
+                    <div class="text-center pb-2" style="font-size: 0.9rem;">
+                        <span style="color: var(--text-muted);">Already initialized?</span>
+                        <a href="/login" style="color: var(--accent-1); text-decoration: none; font-weight: 500;">Return to Login</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR EYE TOGGLE -->
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#passwordInput');
+
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                this.classList.toggle('bi-eye');
+                this.classList.toggle('bi-eye-slash');
+                
+                if (type === 'text') {
+                    this.style.color = 'var(--accent-1)';
+                } else {
+                    this.style.color = 'var(--text-muted)';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

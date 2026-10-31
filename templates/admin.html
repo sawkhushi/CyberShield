@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - CyberShield</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=6">
+</head>
+<body>
+
+    <div class="bg-grid"></div>
+    <div class="glow-orb-1" style="top: -10%; left: -10%; width: 500px; height: 500px; opacity: 0.15;"></div>
+
+    <aside class="sidebar py-4 px-3">
+        <div class="d-flex align-items-center gap-2 px-3 mb-5">
+            <i class="bi bi-shield-check fs-3 text-gradient-accent"></i>
+            <span class="fw-bold fs-4 text-white tracking-tight brand-font">CyberShield</span>
+        </div>
+
+        <nav class="d-flex flex-column flex-grow-1">
+            <div class="px-3 mb-2" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Security Tools</div>
+            <a href="/dashboard" class="nav-item-custom">
+                <i class="bi bi-grid-1x2"></i> Dashboard
+            </a>
+            <a href="/password" class="nav-item-custom">
+                <i class="bi bi-fingerprint"></i> Password Checker
+            </a>
+            <a href="/urlcheck" class="nav-item-custom">
+                <i class="bi bi-globe2"></i> Website Scanner
+            </a>
+            <a href="/report" class="nav-item-custom">
+                <i class="bi bi-clock-history"></i> Scan History
+            </a>
+
+            <div class="px-3 mb-2 mt-4" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Account</div>
+            <a href="/admin" class="nav-item-custom active">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </nav>
+        
+        <div class="mt-auto p-3 mx-2 rounded-3" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light);">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); font-weight: 600; font-size: 0.9rem; color: #09090B;">
+                    {{ user.name[0]|upper }}
+                </div>
+                <div class="overflow-hidden">
+                    <div class="text-white fw-medium text-truncate" style="font-size: 0.9rem;">{{ user.name }}</div>
+                    <div class="text-truncate" style="font-size: 0.75rem; color: var(--text-muted);">User Account</div>
+                </div>
+                <a href="/logout" class="ms-auto text-muted" title="Logout"><i class="bi bi-box-arrow-right fs-5"></i></a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="mb-4 pb-3 border-bottom" style="border-color: var(--border-light) !important;">
+            <h1 class="h3 fw-bold text-white mb-1 brand-font">Account Settings</h1>
+            <p class="mb-0" style="color: var(--text-muted); font-size: 0.95rem;">Manage your user profile and system preferences.</p>
+        </header>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert align-items-center d-flex p-3 mb-4 rounded" 
+                         style="background: {% if category == 'success' %}rgba(16, 185, 129, 0.1){% else %}rgba(239, 68, 68, 0.1){% endif %}; 
+                                border: 1px solid {% if category == 'success' %}rgba(16, 185, 129, 0.3){% else %}rgba(239, 68, 68, 0.3){% endif %}; 
+                                color: {% if category == 'success' %}#10B981{% else %}#EF4444{% endif %}; font-size: 0.85rem;">
+                        <i class="bi {% if category == 'success' %}bi-check-circle{% else %}bi-exclamation-triangle{% endif %} me-2 fs-5"></i>
+                        <div>{{ message }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="enterprise-card h-100">
+                    <h3 class="fs-5 fw-bold text-white mb-4 brand-font">Profile Information</h3>
+                    
+                    <div class="mb-4">
+                        <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">FULL NAME</label>
+                        <input type="text" class="form-control form-control-custom w-100" value="{{ user.name }}" readonly style="background: rgba(0,0,0,0.2); opacity: 0.8;">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">EMAIL ADDRESS</label>
+                        <input type="email" class="form-control form-control-custom w-100" value="{{ user.email }}" readonly style="background: rgba(0,0,0,0.2); opacity: 0.8;">
+                    </div>
+                    
+                    <div class="mb-2">
+                        <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">NODE STATUS</label>
+                        <div class="d-flex align-items-center gap-2 px-3 py-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); width: fit-content;">
+                            <span class="badge-status badge-optimal">Online</span>
+                            <span style="font-size: 0.9rem; color: var(--text-main);">{{ status }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="enterprise-card h-100">
+                    <h3 class="fs-5 fw-bold text-white mb-4 brand-font">Security Actions</h3>
+                    
+                    <!-- ACTIVE CHANGE PASSWORD BUTTON -->
+                    <button class="btn-outline-custom w-100 d-flex justify-content-between align-items-center px-3 py-3 mb-3" data-bs-toggle="modal" data-bs-target="#passwordModal">
+                        <span>Change Password</span>
+                        <i class="bi bi-lock"></i>
+                    </button>
+                    
+                    <a href="/export" class="btn-outline-custom w-100 d-flex justify-content-between align-items-center text-decoration-none px-3 py-3 mb-3">
+                        <span>Export Scan Data (CSV)</span>
+                        <i class="bi bi-download"></i>
+                    </a>
+
+                    <hr style="border-color: var(--border-light); margin: 1.5rem 0;">
+
+                    <a href="/logout" class="btn w-100 d-flex justify-content-between align-items-center px-3 py-3" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #EF4444; border-radius: 12px; transition: 0.2s;">
+                        <span>Secure Logout</span>
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CHANGE PASSWORD MODAL -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content enterprise-card border-0" style="background: #09090B;">
+                <div class="modal-header border-bottom" style="border-color: var(--border-light) !important;">
+                    <h5 class="modal-title text-white brand-font fw-bold">Change Password</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form action="/admin" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">CURRENT PASSWORD</label>
+                            <div class="position-relative">
+                                <i class="bi bi-key input-icon"></i>
+                                <input type="password" name="current_password" id="currentPassword" class="form-control form-control-custom w-100" placeholder="Enter current password" style="padding-right: 40px;" required>
+                                <i class="bi bi-eye-slash position-absolute toggle-icon" onclick="toggleVisibility('currentPassword', this)" style="right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1.1rem; z-index: 10;"></i>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label" style="color: var(--text-muted); font-size: 0.85rem;">NEW PASSWORD</label>
+                            <div class="position-relative">
+                                <i class="bi bi-shield-lock input-icon"></i>
+                                <input type="password" name="new_password" id="newPassword" class="form-control form-control-custom w-100" placeholder="Enter new password" style="padding-right: 40px;" required>
+                                <i class="bi bi-eye-slash position-absolute toggle-icon" onclick="toggleVisibility('newPassword', this)" style="right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1.1rem; z-index: 10;"></i>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary-custom w-100 py-3 mt-2">Update Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple function to handle multiple eye toggle icons in the modal
+        function toggleVisibility(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            
+            iconElement.classList.toggle('bi-eye');
+            iconElement.classList.toggle('bi-eye-slash');
+            
+            if (type === 'text') {
+                iconElement.style.color = 'var(--accent-1)';
+            } else {
+                iconElement.style.color = 'var(--text-muted)';
+            }
+        }
+    </script>
+</body>
+</html>
