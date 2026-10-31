@@ -317,3 +317,20 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
+
+@app.route('/secret-db-view')
+def secret_db_view():
+    # Fetch all data from the database
+    all_users = User.query.all()
+    all_logs = AuditLog.query.all()
+    
+    # Format it cleanly
+    user_data = [f"ID {u.id}: {u.email}" for u in all_users]
+    log_data = [f"Log {l.id} (User {l.user_id}) | {l.target} | {l.status}" for l in all_logs]
+    
+    # Return as raw data to the browser
+    return {
+        "1_Live_Users": user_data,
+        "2_Live_Scans": log_data,
+        "3_Message": "Live Database Connection Successful"
+    }
